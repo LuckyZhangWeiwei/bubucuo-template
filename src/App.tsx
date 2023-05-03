@@ -1,14 +1,33 @@
-import { useState } from 'react'
+import React,{ useState } from 'react'
+import {
+  createRoutesFromElements,
+  createBrowserRouter,
+  Route,
+  RouterProvider,
+} from "react-router-dom";
+
+import EditPage from './pages/EditPage';
+import ListPage from './pages/ListPage';
+import RequireAuth from './components/RequireAuth';
+
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <Route
+        path="/"
+        element={<RequireAuth/>}
+      >
+        <Route index element={<EditPage/>}/>
+        <Route path='list' element={<ListPage/>}/>
+      </Route>
+    )
+  )
 
   return (
-    <div>
-      <h3>App</h3>
-      <i className='icon-iconfont icon-zujian-wenben'></i>
-    </div>
+    <RouterProvider router={router} />
   )
 }
 
