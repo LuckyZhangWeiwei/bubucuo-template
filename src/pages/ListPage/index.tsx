@@ -1,7 +1,9 @@
-import { Button, Card, Divider, Space, Table,Modal } from 'antd'
+import { Button, Card, Divider, Space, Table,Modal, message } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { deleteCanvas, getCanvasList } from 'src/request/list';
+import { deleteCanvasByIdEnd, getCanvasListEnd } from 'src/api/api';
+import Axios from 'src/api/axios';
+import useUserStore from 'src/store/userStore/userStore';
 
 interface ListItem {
   id: number,
@@ -13,12 +15,14 @@ const {confirm} = Modal;
 
 export default function ListPage() {
   const [list, setList] = useState([])
-
-  const fresh = () => {
-    getCanvasList("", (res: any) => {
-      let data = res.content || [];
-      setList(data);
-    });
+  const isLogin = useUserStore((state) => state.isLogin);
+  const fresh = async () => {
+    if (!isLogin) {
+      return;
+    }
+    const res: any = await Axios.get(getCanvasListEnd);
+    let data = res?.content || [];
+    setList(data);
   };
 
   useEffect(() => {
@@ -72,18 +76,17 @@ export default function ListPage() {
       },
     },
   ]
-  const del = (values: {id: number}) => {
+  const del = (id:number) => {
     confirm({
       title: "删除",
       content: "您确认要删除吗，一旦删除之后将无法恢复",
       okText: "确认",
       okType: "danger",
       cancelText: "取消",
-      onOk() {
-        deleteCanvas(values, () => {
-          alert("删除成功");
-          fresh();
-        });
+      onOk:async()=> {
+        await Axios.post(deleteCanvasByIdEnd, id);
+        message.success("删除成功");
+        fresh();
       },
     });
   };

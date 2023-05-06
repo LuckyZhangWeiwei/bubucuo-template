@@ -1,46 +1,45 @@
 import { Modal, Form, Input, Checkbox, Button } from 'antd'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
 import React from 'react'
-import { login, logout } from 'src/request/user'
+import useUserStore, { login, logout } from 'src/store/userStore/userStore'
 import docCookies from 'src/utils/cookies'
+import Axios from 'src/api/axios'
+import { registerEnd } from 'src/api/api'
 
 import './Login.less'
-import { register } from 'src/request/register'
+import useGlobalStore from 'src/store/globalStore/globalStore'
 
 export default function Login() {
-    const autoSessionId = docCookies.getItem('sessionId')
-    const userName = docCookies.getItem('name')
-
-    if( autoSessionId ) {
-        return <Button onClick={()=>logout(()=>{})}>{ userName }</Button>
+    const isLogin = useUserStore(state => state.isLogin)
+    const loading = useGlobalStore((state) => state.loading);
+    
+    if (loading) {
+        return;
+    }
+    if (isLogin) {
+        return (<Button onClick={() => logout()}>退出登录</Button>)
     }
 
-    const handleOk = () => {
-        window.location.reload()
-    }
-    const onFinish =({
+    const onFinish = ({
         name,
         password,
         register_login
-    }:{name:string,password:string,register_login:boolean})=>{
-        if(register_login) {
-            registerAndLogin({name,password})
-        }else{
-            login({name,password},()=>{
-                handleOk()
-            })
+    }: { name: string, password: string, register_login: boolean }) => {
+        if (register_login) {
+            registerAndLogin({ name, password })
+        } else {
+            login({ name, password })
         }
     }
-    const onFinishFalsed=(errorInfo:any)=>{
-        console.log('failed:',errorInfo);
+    const onFinishFalsed = (errorInfo: any) => {
+        console.log('failed:', errorInfo);
     }
-    const registerAndLogin=({name,password}:{name:string,password:string})=>{
-        register({name,password},()=>{
-            login({name,password},()=>{
-                handleOk()
-            })
-        })
-    }
+    const registerAndLogin = async (values: { name: string; password: string }) => {
+        const res = await Axios.post(registerEnd, values);
+        if (res) {
+            login(values);
+        }
+    };
     return (
         <Modal
             title="注册与登录"
@@ -75,7 +74,6 @@ export default function Login() {
                 >
                     <Input.Password
                         prefix={<LockOutlined className="site-form-item-icon" />}
-                        visible="true"
                         placeholder="密码" />
                 </Form.Item>
                 <Form.Item
@@ -85,9 +83,9 @@ export default function Login() {
                     <Checkbox className="red">注册并登录</Checkbox>
                 </Form.Item>
                 <Form.Item
-                className='flex justify-center'>
-                    <Button 
-                    type="primary" htmlType="submit">
+                    className='flex justify-center'>
+                    <Button
+                        type="primary" htmlType="submit">
                         提交
                     </Button>
                 </Form.Item>
