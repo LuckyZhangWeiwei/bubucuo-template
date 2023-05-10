@@ -14,7 +14,7 @@ export default function RequireAuth() {
         height: 64,
         paddingInline: 10,
         lineHeight: "64px",
-        backgroundColor: "black",
+        // backgroundColor: "",
     };
     return (
         <Layout>
@@ -23,7 +23,7 @@ export default function RequireAuth() {
                     <Spin size="large" />
                 </div>
             )}
-            <Header style={headerStyle}>
+            <Header className='bg-white shadow-2xl' style={headerStyle}>
                 <Login />
             </Header>
 

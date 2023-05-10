@@ -4,11 +4,16 @@ module.exports = {
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:react-hooks/recommended',
+    'prettier'
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: { ecmaVersion: 'latest', sourceType: 'module' },
   plugins: ['react-refresh'],
   rules: {
     'react-refresh/only-export-components': 'warn',
+    'no-undef': 'off',
+    "no-useless-escape": "off",
+    'no-useless-backreference': 'off',
+    'no-explicit-any': 'off',
   },
 }

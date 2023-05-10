@@ -22,15 +22,15 @@ export default function OptionComponent(props: optionComponentProps) {
     return (
         <li
             className={clsx(
-                "flex flex-col items-center mt-5 cursor-pointer",
+                "flex flex-col items-center mt-5 cursor-pointer gap-1",
                 showSide === optionComponentType
-                    ? "box-border border-y-0 border-r-0 border-l-4 border-indigo-500 border-solid text-[#0057ff]" : ""
+                    ? "box-border border-y-0 border-r-0 border-l-4 border-sky-600 border-solid text-sky-600" : ""
             )}
             onClick={() => _setShowSide(optionComponentType)}>
             <i
-                className={clsx("iconfont", icon)}
+                className={clsx("iconfont text-2xl", icon)}
             />
-            <span className={clsx("text-[14px]")}>{ title }</span>
+            <span className={clsx("text-[14px]",showSide === optionComponentType ? "text-sky-600":"text-slate-600")}>{ title }</span>
         </li>
     )
 }

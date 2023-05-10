@@ -1,8 +1,7 @@
 import { Modal, Form, Input, Checkbox, Button } from 'antd'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
-import React from 'react'
-import useUserStore, { login, logout } from 'src/store/userStore/userStore'
-import docCookies from 'src/utils/cookies'
+import React, { useEffect } from 'react'
+import useUserStore, { fetchUserInfo, login, logout } from 'src/store/userStore/userStore'
 import Axios from 'src/api/axios'
 import { registerEnd } from 'src/api/api'
 
@@ -12,7 +11,9 @@ import useGlobalStore from 'src/store/globalStore/globalStore'
 export default function Login() {
     const isLogin = useUserStore(state => state.isLogin)
     const loading = useGlobalStore((state) => state.loading);
-    
+    useEffect(() => {
+        fetchUserInfo();
+    }, []);
     if (loading) {
         return;
     }
@@ -39,7 +40,7 @@ export default function Login() {
         if (res) {
             login(values);
         }
-    };
+    }
     return (
         <Modal
             title="注册与登录"

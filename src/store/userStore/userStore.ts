@@ -1,23 +1,34 @@
 import Axios from 'src/api/axios';
-import { loginEnd, logoutEnd } from 'src/api/api';
+import { getUserInfo, loginEnd, logoutEnd } from 'src/api/api';
 import { create } from 'zustand';
 import { UserStoreType, loginParams } from './userStoreType';
 import docCookies from 'src/utils/cookies';
 
 
 
-const initalState: UserStoreType = {
+const initialState: UserStoreType = {
     isLogin: false,
     name: ''
 }
 
-const useUserStore = create<UserStoreType>((set) => ({
-    ...initalState,
+const useUserStore = create<UserStoreType>(() => ({
+    ...initialState,
 }))
+// 获取用户信息
+export const fetchUserInfo = async () => {
+    let user = {...initialState};
+
+    const res = await Axios.get(getUserInfo);
+    if (res) {
+        user = {isLogin: true, name: res.data.name};
+    }
+
+    useUserStore.setState(() => user);
+};
 
 // * 登录
 export const login = async (values: loginParams) => {
-    let user = { ...initalState }
+    let user = { ...initialState }
     const res: any = await Axios.post(loginEnd, values);
     if (res) {
         user = { isLogin: true, name: res.name }
@@ -27,7 +38,7 @@ export const login = async (values: loginParams) => {
 }
 // * 退出登录
 export const logout = async () => {
-    let user = { ...initalState };
+    const user = { ...initialState };
 
     await Axios.post(logoutEnd);
     docCookies.removeItem("sessionId");

@@ -1,4 +1,4 @@
-var docCookies = {
+const docCookies = {
     getItem: function (sKey: string) {
         return (
             decodeURIComponent(
@@ -24,7 +24,7 @@ var docCookies = {
         if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/i.test(sKey)) {
             return false;
         }
-        var sExpires = "";
+        let sExpires = "";
         if (vEnd) {
             switch (vEnd.constructor) {
                 case Number:
@@ -70,10 +70,10 @@ var docCookies = {
         ).test(document.cookie);
     },
     keys: /* optional method: you can safely remove it! */ function () {
-        var aKeys = document.cookie
+        const aKeys = document.cookie
             .replace(/((?:^|\s*;)[^\=]+)(?=;|$)|^\s*|\s*(?:\=[^;]*)?(?:\1|$)/g, "")
             .split(/\s*(?:\=[^;]*)?;\s*/);
-        for (var nIdx = 0; nIdx < aKeys.length; nIdx++) {
+        for (let nIdx = 0; nIdx < aKeys.length; nIdx++) {
             aKeys[nIdx] = decodeURIComponent(aKeys[nIdx]);
         }
         return aKeys;

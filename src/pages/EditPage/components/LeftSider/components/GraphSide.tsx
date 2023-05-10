@@ -1,6 +1,6 @@
 import { defaultComponentStyle } from "src/utils/const";
 import useEditStore from "src/store/editStore/editStore";
-import { isGraphComponent } from "..";
+import  {isGraphComponent}  from "src/utils";
 
 const defaultStyle = {
     ...defaultComponentStyle,

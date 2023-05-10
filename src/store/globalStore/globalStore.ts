@@ -4,7 +4,7 @@ interface GlobalStoreType {
     loading:boolean
 }
 
-const useGlobalStore = create<GlobalStoreType>((set)=>({
+const useGlobalStore = create<GlobalStoreType>(()=>({
     loading:false
 }))
 

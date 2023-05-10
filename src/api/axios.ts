@@ -5,10 +5,12 @@
 import { message } from 'antd';
 import axios from 'axios';
 import { hideLoading, showLoading } from 'src/store/globalStore/globalStore';
+import docCookies from 'src/utils/cookies';
 
 // 创建Axios
 const Axios = axios.create({
     timeout: 20000,
+    
 })
 // 添加请求拦截器
 Axios.interceptors.request.use(function (config) {
@@ -16,6 +18,7 @@ Axios.interceptors.request.use(function (config) {
     if (config.headers.globalLoading !== false) {
         showLoading()
     }
+    config.headers.Authorization = docCookies.getItem("sessionId") || "";
     return config;
 }, function (error) {
     if (error.config.headers.globalLoading !== false) {
@@ -33,7 +36,7 @@ Axios.interceptors.response.use(function (response) {
         hideLoading();
     }
     if (response.status === 200) {
-        let code = response.data.code;
+        const code = response.data.code;
         if (code === 200) {
             return response.data.result;
         } else if (code === 401) {

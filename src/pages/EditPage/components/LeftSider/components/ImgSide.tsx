@@ -1,5 +1,5 @@
 import { defaultComponentStyle } from "src/utils/const";
-import { isImgComponent } from "..";
+import { isImgComponent } from "src/utils";
 import useEditStore from "src/store/editStore/editStore";
 
 
