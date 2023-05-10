@@ -1,11 +1,11 @@
-import React from 'react'
-import { Layout, Spin } from 'antd'
-import { Outlet } from 'react-router-dom'
+import React from "react";
+import { Layout, Spin } from "antd";
+import { Outlet } from "react-router-dom";
 
-import Login from './Login/Login'
-import useGlobalStore from 'src/store/globalStore/globalStore'
+import Login from "./Login/Login";
+import useGlobalStore from "src/store/globalStore/globalStore";
 
-const { Header } = Layout
+const { Header } = Layout;
 export default function RequireAuth() {
     const loading = useGlobalStore((state) => state.loading);
     const headerStyle: React.CSSProperties = {
@@ -23,11 +23,11 @@ export default function RequireAuth() {
                     <Spin size="large" />
                 </div>
             )}
-            <Header className='bg-white shadow-2xl' style={headerStyle}>
+            <Header className="bg-white shadow-2xl" style={headerStyle}>
                 <Login />
             </Header>
 
             <Outlet />
         </Layout>
-    )
+    );
 }

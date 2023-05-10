@@ -1,17 +1,17 @@
-import { create } from 'zustand';
+import { create } from "zustand";
 
 interface GlobalStoreType {
-    loading:boolean
+    loading: boolean;
 }
 
-const useGlobalStore = create<GlobalStoreType>(()=>({
-    loading:false
-}))
+const useGlobalStore = create<GlobalStoreType>(() => ({
+    loading: false,
+}));
 
 export const showLoading = () => {
-    useGlobalStore.setState({loading:true})
-}
+    useGlobalStore.setState({ loading: true });
+};
 export const hideLoading = () => {
-    useGlobalStore.setState({loading:false})
-}
+    useGlobalStore.setState({ loading: false });
+};
 export default useGlobalStore;

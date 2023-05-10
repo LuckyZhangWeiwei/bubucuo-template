@@ -5,8 +5,11 @@ const docCookies = {
                 document.cookie.replace(
                     new RegExp(
                         "(?:(?:^|.*;)\\s*" +
-                        encodeURIComponent(sKey).replace(/[-.+*]/g, "\\$&") +
-                        "\\s*\\=\\s*([^;]*).*$)|^.*$"
+                            encodeURIComponent(sKey).replace(
+                                /[-.+*]/g,
+                                "\\$&"
+                            ) +
+                            "\\s*\\=\\s*([^;]*).*$)|^.*$"
                     ),
                     "$1"
                 )
@@ -65,13 +68,16 @@ const docCookies = {
     hasItem: function (sKey: string) {
         return new RegExp(
             "(?:^|;\\s*)" +
-            encodeURIComponent(sKey).replace(/[-.+*]/g, "\\$&") +
-            "\\s*\\="
+                encodeURIComponent(sKey).replace(/[-.+*]/g, "\\$&") +
+                "\\s*\\="
         ).test(document.cookie);
     },
     keys: /* optional method: you can safely remove it! */ function () {
         const aKeys = document.cookie
-            .replace(/((?:^|\s*;)[^\=]+)(?=;|$)|^\s*|\s*(?:\=[^;]*)?(?:\1|$)/g, "")
+            .replace(
+                /((?:^|\s*;)[^\=]+)(?=;|$)|^\s*|\s*(?:\=[^;]*)?(?:\1|$)/g,
+                ""
+            )
             .split(/\s*(?:\=[^;]*)?;\s*/);
         for (let nIdx = 0; nIdx < aKeys.length; nIdx++) {
             aKeys[nIdx] = decodeURIComponent(aKeys[nIdx]);

@@ -1,8 +1,8 @@
 export interface UserStoreType {
-    isLogin:boolean;
-    name:string;
+    isLogin: boolean;
+    name: string;
 }
 export interface loginParams {
-    name:string;
-    password:string;
+    name: string;
+    password: string;
 }
