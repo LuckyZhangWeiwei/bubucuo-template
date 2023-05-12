@@ -1,8 +1,9 @@
 import { throttle } from "lodash";
-import React from "react";
 import useEditStore, { dragSelectedCmps } from "src/store/editStore/editStore";
+import useZoomStore from "src/store/zoomStore/zoomStore";
 
 export default function EditBox() {
+    const zoom = useZoomStore((state) => state.zoom);
     const [cmps, assmbly] = useEditStore((state) => [
         state.canvas.cmps,
         state.assembly,
@@ -38,8 +39,8 @@ export default function EditBox() {
             const moveingX = e.pageX;
             const moveingY = e.pageY;
 
-            const x = moveingX - startX;
-            const y = moveingY - startY;
+            const x = (moveingX - startX) * (100 / zoom);
+            const y = (moveingY - startY) * (100 / zoom);
             dragSelectedCmps(x, y);
             startX = moveingX;
             startY = moveingY;

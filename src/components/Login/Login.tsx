@@ -19,7 +19,7 @@ export default function Login() {
         fetchUserInfo();
     }, []);
     if (loading) {
-        return;
+        return null;
     }
     if (isLogin) {
         return (

@@ -1,5 +1,5 @@
 import { Button, Card, Divider, Space, Table, Modal, message } from "antd";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { deleteCanvasByIdEnd, getCanvasListEnd } from "src/api/api";
 import Axios from "src/api/axios";
@@ -34,6 +34,8 @@ export default function ListPage() {
         {
             title: "id",
             key: "id",
+            align: "center",
+            width: 300,
             render: (item: ListItem) => {
                 return <Link to={editUrl(item)}>{item.id}</Link>;
             },
@@ -41,6 +43,8 @@ export default function ListPage() {
         {
             title: "标题",
             key: "title",
+            align: "center",
+            width: 300,
             render: (item: ListItem) => {
                 const title = item.title || "未命名";
                 return <Link to={editUrl(item)}>{title}</Link>;
@@ -50,6 +54,8 @@ export default function ListPage() {
         {
             title: "类型",
             key: "type",
+            align: "center",
+            width: 300,
             render: (item: ListItem) => {
                 const typeDesc = item.type === "content" ? "页面" : "模板页";
                 return <div className="red">{typeDesc}</div>;
@@ -59,6 +65,7 @@ export default function ListPage() {
         {
             title: "动作",
             key: "action",
+            align: "center",
             render: (item: ListItem) => {
                 const { id } = item;
                 return (
@@ -99,6 +106,7 @@ export default function ListPage() {
             <Divider />
 
             <Table
+                size="large"
                 rowKey={(record: ListItem) => record.id}
                 dataSource={list}
                 columns={columns}

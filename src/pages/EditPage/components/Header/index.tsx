@@ -1,4 +1,4 @@
-import React from "react";
+
 import { Link, useNavigate } from "react-router-dom";
 import { useCanvasId, useCanvasType } from "src/utils/hooks";
 import { saveCanvas, clearCanvas } from "src/store/editStore/editStore";

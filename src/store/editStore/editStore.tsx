@@ -4,6 +4,7 @@ import { ICanvas, ICmp, IEditStoreState } from "./editStoretyps";
 import { getOnlyKey } from "src/utils";
 import Axios from "src/api/axios";
 import { getCanvasByIdEnd, saveCanvasEnd } from "src/api/api";
+import { removeZoom } from "../zoomStore/zoomStore";
 
 const useEditStore = create(
     immer<IEditStoreState>(() => ({
@@ -41,6 +42,7 @@ export const getCanvas = async (id: number) => {
             draft.canvas = JSON.parse(res.content);
             draft.canvas.title = res.title;
         });
+        removeZoom();
     }
 };
 //清空画布内容
@@ -49,6 +51,7 @@ export const clearCanvas = () => {
         draft.canvas = getDefaultCanvas();
         draft.assembly.clear();
     });
+    removeZoom();
 };
 
 // 全选组件
@@ -91,7 +94,7 @@ export const dragSelectedCmps = (x: number, y: number) => {
             cmp.style.left += x;
         });
     });
-}
+};
 export default useEditStore;
 
 export function getDefaultCanvas(): ICanvas {

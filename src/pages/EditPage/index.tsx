@@ -1,5 +1,5 @@
 import { Layout } from "antd";
-import React from "react";
+
 import LeftSide from "./components/LeftSider";
 import Center from "./components/Center";
 import RightSide from "./components/RightSide";
