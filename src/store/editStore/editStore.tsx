@@ -82,6 +82,16 @@ export const selectOneCmp = (index: number) => {
         }
     });
 };
+// 拖拽组件
+export const dragSelectedCmps = (x: number, y: number) => {
+    useEditStore.setState((draft) => {
+        draft.assembly.forEach((index) => {
+            const cmp = draft.canvas.cmps[index];
+            cmp.style.top += y;
+            cmp.style.left += x;
+        });
+    });
+}
 export default useEditStore;
 
 export function getDefaultCanvas(): ICanvas {

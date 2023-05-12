@@ -1,5 +1,6 @@
+import { throttle } from "lodash";
 import React from "react";
-import useEditStore from "src/store/editStore/editStore";
+import useEditStore, { dragSelectedCmps } from "src/store/editStore/editStore";
 
 export default function EditBox() {
     const [cmps, assmbly] = useEditStore((state) => [
@@ -29,9 +30,32 @@ export default function EditBox() {
     top -= 1;
     left -= 1;
 
+    function onMouseDownOfCmp(e) {
+        let startX = e.pageX;
+        let startY = e.pageY;
+
+        const move = throttle((e) => {
+            const moveingX = e.pageX;
+            const moveingY = e.pageY;
+
+            const x = moveingX - startX;
+            const y = moveingY - startY;
+            dragSelectedCmps(x, y);
+            startX = moveingX;
+            startY = moveingY;
+        }, 50);
+
+        const up = (e) => {
+            document.removeEventListener("mousemove", move);
+            document.removeEventListener("mouseup", up);
+        };
+        document.addEventListener("mousemove", move);
+        document.addEventListener("mouseup", up);
+    }
     return (
         <div
-            className="absolute cursor-move box-border border-dashed border border-slate-600 pointer-events-none"
+            onMouseDown={onMouseDownOfCmp}
+            className="absolute cursor-move box-border border-dashed border border-slate-600"
             style={{
                 zIndex: 9999,
                 top,
