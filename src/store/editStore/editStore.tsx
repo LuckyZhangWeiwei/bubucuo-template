@@ -1,26 +1,23 @@
 import { immer } from "zustand/middleware/immer";
 import { create } from "zustand";
-import {
-    ICanvas,
-    ICmp,
-    IEditStoreAction,
-    IEditStoreState,
-} from "./editStoretyps";
+import { ICanvas, ICmp, IEditStoreState } from "./editStoretyps";
 import { getOnlyKey } from "src/utils";
 import Axios from "src/api/axios";
 import { getCanvasByIdEnd, saveCanvasEnd } from "src/api/api";
 
 const useEditStore = create(
-    immer<IEditStoreState & IEditStoreAction>((set) => ({
+    immer<IEditStoreState>(() => ({
         canvas: getDefaultCanvas(),
-        addCmp: (_cmp: ICmp) => {
-            set((state) => {
-                state.canvas.cmps.push({ ..._cmp, key: getOnlyKey() });
-            });
-        },
+        assembly: new Set(),
     }))
 );
-
+// 增加画布组件
+export const addCmp = (cmp: ICmp) => {
+    useEditStore.setState((draft) => {
+        draft.canvas.cmps.push({ ...cmp, key: getOnlyKey() });
+        draft.assembly = new Set([draft.canvas.cmps.length - 1]);
+    });
+};
 // 保存画布内容
 export const saveCanvas = async (
     id: number | null,
@@ -50,6 +47,39 @@ export const getCanvas = async (id: number) => {
 export const clearCanvas = () => {
     useEditStore.setState((draft) => {
         draft.canvas = getDefaultCanvas();
+        draft.assembly.clear();
+    });
+};
+
+// 全选组件
+export const selectAllCmps = () => {
+    useEditStore.setState((draft) => {
+        draft.assembly = new Set(
+            Array.from({ length: draft.canvas.cmps.length }, (a, b) => b)
+        );
+    });
+};
+// 多选组件
+export const selectSomeCmps = (indexArr: number[]) => {
+    useEditStore.setState((draft) => {
+        if (indexArr)
+            indexArr.forEach((index) => {
+                if (draft.assembly.has(index)) {
+                    draft.assembly.delete(index);
+                } else {
+                    draft.assembly.add(index);
+                }
+            });
+    });
+};
+// 选中一个组件
+export const selectOneCmp = (index: number) => {
+    useEditStore.setState((draft) => {
+        if (index === -1) {
+            draft.assembly.clear();
+        } else {
+            draft.assembly = new Set([index]);
+        }
     });
 };
 export default useEditStore;

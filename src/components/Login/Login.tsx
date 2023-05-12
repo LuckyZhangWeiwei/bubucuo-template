@@ -22,7 +22,11 @@ export default function Login() {
         return;
     }
     if (isLogin) {
-        return <Button onClick={() => logout()}>退出登录</Button>;
+        return (
+            <Button style={{ float: "right", marginTop: 16 }} onClick={logout}>
+                退出登录
+            </Button>
+        );
     }
 
     const onFinish = ({

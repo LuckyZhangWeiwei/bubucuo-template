@@ -1,5 +1,5 @@
 import { defaultComponentStyle } from "src/utils/const";
-import useEditStore from "src/store/editStore/editStore";
+import { addCmp } from "src/store/editStore/editStore";
 import { isTextComponent } from "src/utils";
 
 const defaultStyle = {
@@ -33,7 +33,6 @@ const settings = [
 ];
 
 export default function TextSide() {
-    const addCmp = useEditStore((state) => state.addCmp);
     console.log("TextSide render");
 
     const onDragStart = (e: React.DragEvent<HTMLLIElement>, item) => {

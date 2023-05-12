@@ -1,6 +1,6 @@
 import { defaultComponentStyle } from "src/utils/const";
 import { isImgComponent } from "src/utils";
-import useEditStore from "src/store/editStore/editStore";
+import { addCmp } from "src/store/editStore/editStore";
 
 const defaultStyle = {
     ...defaultComponentStyle,
@@ -292,7 +292,6 @@ arithmetic.forEach((item) => {
 });
 
 export default function ImgSide() {
-    const addCmp = useEditStore((state) => state.addCmp);
     console.log("TextSide render");
 
     const onDragStart = (e: React.DragEvent<HTMLLIElement>, item) => {

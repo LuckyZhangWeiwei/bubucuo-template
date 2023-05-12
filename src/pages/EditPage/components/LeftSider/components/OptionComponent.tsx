@@ -25,7 +25,7 @@ export default function OptionComponent(props: optionComponentProps) {
             <i className={clsx("iconfont text-2xl", icon)} />
             <span
                 className={clsx(
-                    "text-[14px]",
+                    "text-[14px] select-none",
                     showSide === optionComponentType
                         ? "text-sky-600"
                         : "text-slate-600"

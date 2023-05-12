@@ -16,7 +16,7 @@ export default function LeftSide() {
         }
     };
     return (
-        <div className="fixed flex h-full shadow-md bg-white z-1">
+        <div className="fixed flex h-full shadow-md bg-white z-50">
             <ul className="w-20">
                 <OptionComponent
                     showSide={showSide}

@@ -19,6 +19,7 @@ export interface ICmpWithKey extends ICmp {
 // * 定义仓库state和action
 export type IEditStoreState = {
     canvas: ICanvas;
+    assembly: Set<number>;
 };
 
 export type IEditStoreAction = {

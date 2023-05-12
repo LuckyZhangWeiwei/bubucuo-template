@@ -1,5 +1,6 @@
 // import {_Style} from "src/store/editStoreTypes";
 import useEditStore, {
+    addCmp,
     clearCanvas,
     getCanvas,
 } from "src/store/editStore/editStore";
@@ -7,9 +8,10 @@ import styles from "./index.module.less";
 import Cmp from "../Cmp";
 import { useEffect } from "react";
 import { useCanvasId } from "src/utils/hooks";
+import EditBox from "../EditBox/EditBox";
 
 export default function Canvas() {
-    const { canvas, addCmp } = useEditStore();
+    const { canvas, assembly } = useEditStore();
     const { cmps, style } = canvas;
     const id = useCanvasId();
 
@@ -52,8 +54,14 @@ export default function Canvas() {
             className={styles.main}
             style={canvas.style}
         >
+            <EditBox />
             {cmps.map((cmp, index) => (
-                <Cmp cmp={cmp} key={cmp.key} zIndex={index} />
+                <Cmp
+                    cmp={cmp}
+                    key={cmp.key}
+                    zIndex={index}
+                    isSelected={assembly.has(index)}
+                />
             ))}
         </div>
     );
