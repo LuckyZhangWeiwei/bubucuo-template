@@ -1,6 +1,9 @@
 import { throttle } from "lodash";
-import useEditStore, { dragSelectedCmps } from "src/store/editStore/editStore";
+import useEditStore, {
+    updateAssemblyCmpsByDistance,
+} from "src/store/editStore/editStore";
 import useZoomStore from "src/store/zoomStore/zoomStore";
+import StretchDots from "./StretchDots";
 
 export default function EditBox() {
     const zoom = useZoomStore((state) => state.zoom);
@@ -41,7 +44,7 @@ export default function EditBox() {
 
             const x = (moveingX - startX) * (100 / zoom);
             const y = (moveingY - startY) * (100 / zoom);
-            dragSelectedCmps(x, y);
+            updateAssemblyCmpsByDistance({ top: y, left: x });
             startX = moveingX;
             startY = moveingY;
         }, 50);
@@ -64,6 +67,8 @@ export default function EditBox() {
                 width,
                 height,
             }}
-        ></div>
+        >
+            <StretchDots zoom={zoom} style={{ width, height }} />
+        </div>
     );
 }

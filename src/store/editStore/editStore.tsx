@@ -85,13 +85,23 @@ export const selectOneCmp = (index: number) => {
         }
     });
 };
-// 拖拽组件
-export const dragSelectedCmps = (x: number, y: number) => {
+// 修改组件属性（位置/伸缩）
+export const updateAssemblyCmpsByDistance = (newStyle: any) => {
     useEditStore.setState((draft) => {
         draft.assembly.forEach((index) => {
-            const cmp = draft.canvas.cmps[index];
-            cmp.style.top += y;
-            cmp.style.left += x;
+            const cmp = { ...draft.canvas.cmps[index] };
+            let invaild = false;
+            for (const key in newStyle) {
+                if (
+                    (key === "width" || key === "height") &&
+                    cmp.style[key] + newStyle[key] < 2
+                ) {
+                    invaild = true;
+                    break;
+                }
+                cmp.style[key] += newStyle[key];
+            }
+            if (!invaild) draft.canvas.cmps[index] = cmp;
         });
     });
 };

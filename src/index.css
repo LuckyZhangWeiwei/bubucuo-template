@@ -73,3 +73,8 @@ html {
 .select-none{
     user-select: none!important;
 }
+  @layer utilities{
+    .stretchDot{
+        @apply  w-3 h-3 absolute z-50 bg-blue-400 rounded-full
+    }
+  }
