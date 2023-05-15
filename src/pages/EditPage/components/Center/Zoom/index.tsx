@@ -8,7 +8,7 @@ export default function Zoom() {
     ]);
 
     return (
-        <div className="w-28 fixed right-[180px] bottom-5">
+        <div className="w-28 fixed right-[400px] bottom-5">
             <Slider
                 min={50}
                 max={150}

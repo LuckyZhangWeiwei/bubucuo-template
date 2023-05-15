@@ -12,6 +12,54 @@ const useEditStore = create(
         assembly: new Set(),
     }))
 );
+// 修改单个组件的style
+export const updateSelectedCmpStyle = (newStyle: any) => {
+    useEditStore.setState((draft) => {
+        const cmp = draft.canvas.cmps[Array.from(draft.assembly)[0]];
+        Object.assign(cmp.style, newStyle);
+    });
+};
+// 修改单个组件的属性
+export const updateSelectedCmpAttr = (name: string, value: string) => {
+    useEditStore.setState((draft) => {
+        const selecetedCmpIndex = Array.from(draft.assembly)[0];
+        const cmp = draft.canvas.cmps[selecetedCmpIndex];
+        cmp[name] = value;
+    });
+};
+// 修改选中组件style
+export const editAssemblyStyle = (newStyle: any) => {
+    useEditStore.setState((draft) => {
+        const canvasStyle = draft.canvas.style;
+        draft.assembly.forEach((index) => {
+            const cmpStyle = draft.canvas.cmps[index].style;
+            if (newStyle.right === 0) {
+                cmpStyle.left = canvasStyle.width - cmpStyle.width;
+            } else if (newStyle.bottom === 0) {
+                cmpStyle.top = canvasStyle.height - cmpStyle.height;
+            } else if (newStyle.left === "center") {
+                cmpStyle.left = (canvasStyle.width - cmpStyle.width) / 2;
+            } else if (newStyle.top === "center") {
+                cmpStyle.top = (canvasStyle.height - cmpStyle.height) / 2;
+            } else {
+                Object.assign(cmpStyle, newStyle);
+            }
+            draft.canvas.cmps[index].style = cmpStyle;
+        });
+    });
+};
+// 修改画布title
+export const updateCanvasTitle = (_title: string) => {
+    useEditStore.setState((draft) => {
+        draft.canvas.title = _title;
+    });
+};
+// 修改画布style
+export const updateCanvasStyle = (_style: any) => {
+    useEditStore.setState((draft) => {
+        draft.canvas.style = { ...draft.canvas.style, ..._style };
+    });
+};
 // 增加画布组件
 export const addCmp = (cmp: ICmp) => {
     useEditStore.setState((draft) => {

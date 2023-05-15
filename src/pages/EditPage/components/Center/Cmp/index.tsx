@@ -30,7 +30,9 @@ const Cmp = memo((props: ICmpPorps) => {
         "height",
     ]);
     // 内层div做其他样式
-    const innerStyle = omit(cmp.style, ["position", "top", "left"]);
+    const innerStyle = omit(cmp.style, "position", "top", "left");
+    const transform = `rotate(${cmp.style.transform}deg)`;
+
     const selectedClass = clsx(
         "",
         isSelected && "border border-dashed border-slate-500 box-content"
@@ -39,7 +41,7 @@ const Cmp = memo((props: ICmpPorps) => {
     return (
         <div
             className={selectedClass}
-            style={{ ...outStyle }}
+            style={{ ...outStyle, transform }}
             onClick={selectCmp}
         >
             <div
