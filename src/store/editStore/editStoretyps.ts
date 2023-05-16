@@ -1,5 +1,3 @@
-
-
 export interface ICanvas {
     title: string;
     style: React.CSSProperties;
@@ -20,10 +18,8 @@ export interface ICmpWithKey extends ICmp {
 export type IEditStoreState = {
     canvas: ICanvas;
     assembly: Set<number>;
+    canvasChangeHistory: Array<{ canvas: ICanvas; assembly: Set<number> }>;
+    canvasChangeHistoryIndex: number;
 };
 
-export type IEditStoreAction = {
-    addCmp: (_cmp: ICmp) => void;
-};
-
-export interface IEditStore extends IEditStoreState, IEditStoreAction {}
+export type IEditStore = IEditStoreState;

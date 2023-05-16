@@ -2,6 +2,10 @@ import Canvas from "./Canvas";
 import { selectAllCmps, selectOneCmp } from "src/store/editStore/editStore";
 import Zoom from "./Zoom";
 import useZoomStore from "src/store/zoomStore/zoomStore";
+import {
+    goNextCanvasChangeHistory,
+    goPrevCanvasChangeHistory,
+} from "src/store/editStore/historySlice";
 
 export default function Center() {
     const [zoom, setZoom] = useZoomStore((state) => [
@@ -23,6 +27,13 @@ export default function Center() {
                 case "Minus":
                     setZoom(zoom - 10);
                     e.preventDefault();
+                    return;
+                case "KeyZ":
+                    if (e.shiftKey) {
+                        goNextCanvasChangeHistory();
+                    } else {
+                        goPrevCanvasChangeHistory();
+                    }
                     return;
             }
         }

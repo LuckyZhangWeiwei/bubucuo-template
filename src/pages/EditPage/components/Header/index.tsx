@@ -1,8 +1,11 @@
-
 import { Link, useNavigate } from "react-router-dom";
 import { useCanvasId, useCanvasType } from "src/utils/hooks";
 import { saveCanvas, clearCanvas } from "src/store/editStore/editStore";
 import { message } from "antd";
+import {
+    goNextCanvasChangeHistory,
+    goPrevCanvasChangeHistory,
+} from "src/store/editStore/historySlice";
 
 export default function Header() {
     const id = useCanvasId();
@@ -53,12 +56,18 @@ export default function Header() {
                 <span className="text-xs select-none">保存并预览</span>
             </div>
 
-            <div className="edit-header-item">
+            <div
+                className="edit-header-item"
+                onClick={goPrevCanvasChangeHistory}
+            >
                 <span className="iconfont icon-zuojiantou"></span>
                 <span className="text-xs select-none">上一步（CMD+Z）</span>
             </div>
 
-            <div className="edit-header-item">
+            <div
+                className="edit-header-item"
+                onClick={goNextCanvasChangeHistory}
+            >
                 <span className="iconfont icon-youjiantou"></span>
                 <span className="text-xs select-none">撤销（CMD+Shift+Z）</span>
             </div>

@@ -1,6 +1,9 @@
 import { throttle } from "lodash";
 import useEditStore, {
-    updateAssemblyCmpsByDistance, updateSelectedCmpAttr, updateSelectedCmpStyle,
+    recordCanvasChangeHistoryForDis,
+    updateAssemblyCmpsByDistance,
+    updateSelectedCmpAttr,
+    updateSelectedCmpStyle,
 } from "src/store/editStore/editStore";
 import useZoomStore from "src/store/zoomStore/zoomStore";
 import StretchDots from "./StretchDots";
@@ -55,6 +58,7 @@ export default function EditBox() {
         }, 50);
 
         const up = (e) => {
+            recordCanvasChangeHistoryForDis();
             document.removeEventListener("mousemove", move);
             document.removeEventListener("mouseup", up);
         };

@@ -1,6 +1,6 @@
 import { FormOutlined } from "@ant-design/icons";
 import { Button } from "antd";
-import React, { useState } from "react";
+import { useState } from "react";
 import useEditStore from "src/store/editStore/editStore";
 import EditCanvas from "./EditCanvas";
 import EditCmp from "./EditCmp";

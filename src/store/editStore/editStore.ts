@@ -5,29 +5,36 @@ import { getOnlyKey } from "src/utils";
 import Axios from "src/api/axios";
 import { getCanvasByIdEnd, saveCanvasEnd } from "src/api/api";
 import { removeZoom } from "../zoomStore/zoomStore";
+import { recordCanvasChangeHistory } from "./historySlice";
 
 const useEditStore = create(
     immer<IEditStoreState>(() => ({
         canvas: getDefaultCanvas(),
         assembly: new Set(),
+        canvasChangeHistory: [
+            { canvas: getDefaultCanvas(), assembly: new Set() },
+        ],
+        canvasChangeHistoryIndex: 0,
     }))
 );
-// 修改单个组件的style
+// 修改单个组件的style +
 export const updateSelectedCmpStyle = (newStyle: any) => {
     useEditStore.setState((draft) => {
         const cmp = draft.canvas.cmps[Array.from(draft.assembly)[0]];
         Object.assign(cmp.style, newStyle);
+        recordCanvasChangeHistory(draft);
     });
 };
-// 修改单个组件的属性
+// 修改单个组件的属性 +
 export const updateSelectedCmpAttr = (name: string, value: string) => {
     useEditStore.setState((draft) => {
         const selecetedCmpIndex = Array.from(draft.assembly)[0];
         const cmp = draft.canvas.cmps[selecetedCmpIndex];
         cmp[name] = value;
+        recordCanvasChangeHistory(draft);
     });
 };
-// 修改选中组件style
+// 修改选中组件style +
 export const editAssemblyStyle = (newStyle: any) => {
     useEditStore.setState((draft) => {
         const canvasStyle = draft.canvas.style;
@@ -46,25 +53,29 @@ export const editAssemblyStyle = (newStyle: any) => {
             }
             draft.canvas.cmps[index].style = cmpStyle;
         });
+        recordCanvasChangeHistory(draft);
     });
 };
-// 修改画布title
+// 修改画布title +
 export const updateCanvasTitle = (_title: string) => {
     useEditStore.setState((draft) => {
         draft.canvas.title = _title;
+        recordCanvasChangeHistory(draft);
     });
 };
-// 修改画布style
+// 修改画布style +
 export const updateCanvasStyle = (_style: any) => {
     useEditStore.setState((draft) => {
         draft.canvas.style = { ...draft.canvas.style, ..._style };
+        recordCanvasChangeHistory(draft);
     });
 };
-// 增加画布组件
+// 增加画布组件 +
 export const addCmp = (cmp: ICmp) => {
     useEditStore.setState((draft) => {
         draft.canvas.cmps.push({ ...cmp, key: getOnlyKey() });
         draft.assembly = new Set([draft.canvas.cmps.length - 1]);
+        recordCanvasChangeHistory(draft);
     });
 };
 // 保存画布内容
@@ -81,7 +92,6 @@ export const saveCanvas = async (
     });
     successCallback(res?.id);
 };
-
 //读取画布内容
 export const getCanvas = async (id: number) => {
     const res: any = await Axios.get(getCanvasByIdEnd + id);
@@ -93,15 +103,15 @@ export const getCanvas = async (id: number) => {
         removeZoom();
     }
 };
-//清空画布内容
+//清空画布内容 +
 export const clearCanvas = () => {
     useEditStore.setState((draft) => {
         draft.canvas = getDefaultCanvas();
         draft.assembly.clear();
+        recordCanvasChangeHistory(draft);
     });
     removeZoom();
 };
-
 // 全选组件
 export const selectAllCmps = () => {
     useEditStore.setState((draft) => {
@@ -151,6 +161,12 @@ export const updateAssemblyCmpsByDistance = (newStyle: any) => {
             }
             if (!invaild) draft.canvas.cmps[index] = cmp;
         });
+    });
+};
+// 储存拖拽/拉伸的记录
+export const recordCanvasChangeHistoryForDis = () => {
+    useEditStore.setState((draft) => {
+        recordCanvasChangeHistory(draft);
     });
 };
 export default useEditStore;

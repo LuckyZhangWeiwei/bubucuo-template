@@ -1,4 +1,7 @@
-import { updateAssemblyCmpsByDistance } from "src/store/editStore/editStore";
+import {
+    recordCanvasChangeHistoryForDis,
+    updateAssemblyCmpsByDistance,
+} from "src/store/editStore/editStore";
 import { throttle } from "lodash";
 import useZoomStore from "src/store/zoomStore/zoomStore";
 
@@ -46,6 +49,7 @@ export default function StretchDots(props: IStretchProps) {
             startY = moveingY;
         };
         const up = () => {
+            recordCanvasChangeHistoryForDis();
             document.removeEventListener("mousemove", move);
             document.removeEventListener("mouseup", up);
         };
