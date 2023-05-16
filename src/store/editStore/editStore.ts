@@ -165,6 +165,12 @@ export const updateAssemblyCmpsByDistance = (newStyle: any) => {
 };
 // 储存拖拽/拉伸的记录
 export const recordCanvasChangeHistoryForDis = () => {
+    const store = useEditStore.getState();
+    if (
+        store.canvas ===
+        store.canvasChangeHistory[store.canvasChangeHistoryIndex].canvas
+    )
+        return;
     useEditStore.setState((draft) => {
         recordCanvasChangeHistory(draft);
     });
