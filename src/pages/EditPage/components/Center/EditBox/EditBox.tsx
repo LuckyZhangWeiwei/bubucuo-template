@@ -1,9 +1,12 @@
 import { throttle } from "lodash";
 import useEditStore, {
-    updateAssemblyCmpsByDistance,
+    updateAssemblyCmpsByDistance, updateSelectedCmpAttr, updateSelectedCmpStyle,
 } from "src/store/editStore/editStore";
 import useZoomStore from "src/store/zoomStore/zoomStore";
 import StretchDots from "./StretchDots";
+import { useState } from "react";
+import { isTextComponent } from "src/utils";
+import TextareaAutosize from "react-textarea-autosize";
 
 export default function EditBox() {
     const zoom = useZoomStore((state) => state.zoom);
@@ -11,6 +14,8 @@ export default function EditBox() {
         state.canvas.cmps,
         state.assembly,
     ]);
+    const selectCmp = cmps[Array.from(assmbly)[0]];
+    const [selectCmpFouces, setSelectCmpFouces] = useState(false);
 
     if (assmbly.size === 0) {
         return null;
@@ -67,7 +72,30 @@ export default function EditBox() {
                 width,
                 height,
             }}
+            onClick={(e) => {
+                e.stopPropagation();
+            }}
+            onDoubleClick={() => setSelectCmpFouces(true)}
         >
+            {assmbly.size == 1 &&
+                selectCmpFouces &&
+                selectCmp.type == isTextComponent && (
+                    <TextareaAutosize
+                        value={selectCmp.value}
+                        style={{
+                            ...selectCmp.style,
+                            top: 2,
+                            left: 2,
+                        }}
+                        onChange={(e) => {
+                            const newValue = e.target.value;
+                            updateSelectedCmpAttr("value", newValue);
+                        }}
+                        onHeightChange={(height) => {
+                            updateSelectedCmpStyle({ height });
+                        }}
+                    />
+                )}
             <StretchDots zoom={zoom} style={{ width, height }} />
         </div>
     );

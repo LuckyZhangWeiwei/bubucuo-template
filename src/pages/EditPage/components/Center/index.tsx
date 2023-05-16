@@ -10,6 +10,7 @@ export default function Center() {
     ]);
     //全选
     const keyDown = (e) => {
+        if ((e.target as HTMLElement).nodeName === "TEXTAREA") return;
         if (e.metaKey) {
             switch (e.code) {
                 case "KeyA":
@@ -32,7 +33,7 @@ export default function Center() {
             className="flex flex-1 justify-center py-12 relative min-h-[1000px]"
             tabIndex={0}
             onClick={(e) => {
-                if (e.target?.id === "center") {
+                if ((e.target as HTMLElement).id.indexOf("cmp") === -1) {
                     selectOneCmp(-1);
                 }
             }}

@@ -15,6 +15,7 @@ const Cmp = memo((props: ICmpPorps) => {
     const { cmp, zIndex, isSelected } = props;
 
     const selectCmp = (e) => {
+        e.stopPropagation();
         if (e.metaKey) {
             selectSomeCmps([zIndex]);
         } else {
@@ -45,7 +46,7 @@ const Cmp = memo((props: ICmpPorps) => {
             onClick={selectCmp}
         >
             <div
-                className=" overflow-hidden"
+                className=" overflow-hidden whitespace-pre-wrap"
                 style={{ ...innerStyle, zIndex: zIndex }}
             >
                 {cmp.type === isTextComponent && <TextCmp value={cmp.value} />}
