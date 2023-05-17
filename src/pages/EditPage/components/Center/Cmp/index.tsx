@@ -42,12 +42,16 @@ const Cmp = memo((props: ICmpPorps) => {
     return (
         <div
             className={selectedClass}
-            style={{ ...outStyle, transform }}
+            style={{
+                ...outStyle,
+                transform,
+                zIndex: isSelected ? 9999 : zIndex,
+            }}
             onClick={selectCmp}
         >
             <div
                 className=" overflow-hidden whitespace-pre-wrap"
-                style={{ ...innerStyle, zIndex: zIndex }}
+                style={{ ...innerStyle }}
             >
                 {cmp.type === isTextComponent && <TextCmp value={cmp.value} />}
                 {cmp.type === isImgComponent && <ImgCmp value={cmp.value} />}
