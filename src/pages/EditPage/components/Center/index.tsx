@@ -49,6 +49,7 @@ export default function Center() {
                 }
             }}
             onKeyDown={keyDown}
+            onContextMenu={(e) => e.preventDefault()}
         >
             <Canvas />
             <Zoom />

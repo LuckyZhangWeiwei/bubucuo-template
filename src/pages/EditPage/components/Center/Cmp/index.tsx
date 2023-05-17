@@ -45,7 +45,7 @@ const Cmp = memo((props: ICmpPorps) => {
             style={{
                 ...outStyle,
                 transform,
-                zIndex: isSelected ? 9999 : zIndex,
+                zIndex: isSelected ? 999 : zIndex,
             }}
             onClick={selectCmp}
         >

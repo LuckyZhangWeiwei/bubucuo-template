@@ -175,6 +175,17 @@ export const recordCanvasChangeHistoryForDis = () => {
         recordCanvasChangeHistory(draft);
     });
 };
+// 删除选中组件
+export const delSelectedCmps = () => {
+    useEditStore.setState((draft) => {
+        const assembly = draft.assembly;
+        draft.canvas.cmps = draft.canvas.cmps.filter(
+            (_, index) => !assembly.has(index)
+        );
+        draft.assembly.clear();
+        recordCanvasChangeHistory(draft);
+    });
+};
 export default useEditStore;
 
 export function getDefaultCanvas(): ICanvas {

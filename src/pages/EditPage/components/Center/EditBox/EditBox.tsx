@@ -10,6 +10,7 @@ import StretchDots from "./StretchDots";
 import { useState } from "react";
 import { isTextComponent } from "src/utils";
 import TextareaAutosize from "react-textarea-autosize";
+import Menu from "../Menu";
 
 export default function EditBox() {
     const zoom = useZoomStore((state) => state.zoom);
@@ -19,6 +20,7 @@ export default function EditBox() {
     ]);
     const selectCmp = cmps[Array.from(assmbly)[0]];
     const [selectCmpFouces, setSelectCmpFouces] = useState(false);
+    const [showMenu, setShowMenu] = useState(false);
 
     if (assmbly.size === 0) {
         return null;
@@ -78,8 +80,11 @@ export default function EditBox() {
             }}
             onClick={(e) => {
                 e.stopPropagation();
+                setShowMenu(false);
             }}
             onDoubleClick={() => setSelectCmpFouces(true)}
+            onContextMenu={() => setShowMenu(true)}
+            onMouseLeave={() => setSelectCmpFouces(false)}
         >
             {assmbly.size == 1 &&
                 selectCmpFouces &&
@@ -100,6 +105,9 @@ export default function EditBox() {
                         }}
                     />
                 )}
+            {showMenu && (
+                <Menu style={{ left: width }} assemblySize={assmbly.size} />
+            )}
             <StretchDots zoom={zoom} style={{ width, height }} />
         </div>
     );
