@@ -1,4 +1,7 @@
-import { delSelectedCmps } from "src/store/editStore/editStore";
+import {
+    addAssemblyCmps,
+    delSelectedCmps,
+} from "src/store/editStore/editStore";
 
 export default function Menu({
     style,
@@ -14,7 +17,10 @@ export default function Menu({
     return (
         <div className="absolute top-0" style={style}>
             <ul className="flex flex-col align-top shadow-sm bg-white/90 rounded-md text-center text-sm text-slate-600">
-                <li className="w-[80px] h-[32px] cursor-pointer hover:bg-blue-100/30 leading-8">
+                <li
+                    onClick={addAssemblyCmps}
+                    className="w-[80px] h-[32px] cursor-pointer hover:bg-blue-100/30 leading-8"
+                >
                     复制组件
                 </li>
                 <li

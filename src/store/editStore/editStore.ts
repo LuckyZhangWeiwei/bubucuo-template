@@ -1,11 +1,12 @@
 import { immer } from "zustand/middleware/immer";
 import { create } from "zustand";
-import { ICanvas, ICmp, IEditStoreState } from "./editStoretyps";
+import { ICanvas, ICmp, ICmpWithKey, IEditStoreState } from "./editStoretyps";
 import { getOnlyKey } from "src/utils";
 import Axios from "src/api/axios";
 import { getCanvasByIdEnd, saveCanvasEnd } from "src/api/api";
 import { removeZoom } from "../zoomStore/zoomStore";
 import { recordCanvasChangeHistory } from "./historySlice";
+import { cloneDeep } from "lodash";
 
 const useEditStore = create(
     immer<IEditStoreState>(() => ({
@@ -17,6 +18,29 @@ const useEditStore = create(
         canvasChangeHistoryIndex: 0,
     }))
 );
+// 复制组件
+export const addAssemblyCmps = () => {
+    useEditStore.setState((draft) => {
+        const cmps = draft.canvas.cmps;
+        const newCmps: Array<ICmpWithKey> = [];
+        const newAssembly = new Set<number>();
+        let i = draft.canvas.cmps.length;
+
+        draft.assembly.forEach((index) => {
+            const cmp = draft.canvas.cmps[index];
+            const newCmp = cloneDeep(cmp);
+            newCmp.key = getOnlyKey();
+
+            newCmp.style.left += 40;
+            newCmp.style.top += 40;
+
+            newCmps.push(newCmp);
+            newAssembly.add(i++);
+        });
+        cmps.push(...newCmps);
+        draft.assembly = newAssembly;
+    });
+};
 // 修改单个组件的style +
 export const updateSelectedCmpStyle = (newStyle: any) => {
     useEditStore.setState((draft) => {
