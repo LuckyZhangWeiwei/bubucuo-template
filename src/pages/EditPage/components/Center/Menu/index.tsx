@@ -1,6 +1,10 @@
 import {
     addAssemblyCmps,
+    bottomZIndex,
     delSelectedCmps,
+    downZIndex,
+    topZIndex,
+    upZIndex,
 } from "src/store/editStore/editStore";
 
 export default function Menu({
@@ -31,16 +35,28 @@ export default function Menu({
                 </li>
                 {assemblySize === 1 && (
                     <>
-                        <li className="w-[80px] h-[32px] cursor-pointer hover:bg-blue-100/30 leading-8">
+                        <li
+                            onClick={upZIndex}
+                            className="w-[80px] h-[32px] cursor-pointer hover:bg-blue-100/30 leading-8"
+                        >
                             上移一层
                         </li>
-                        <li className="w-[80px] h-[32px] cursor-pointer hover:bg-blue-100/30 leading-8">
+                        <li
+                            onClick={downZIndex}
+                            className="w-[80px] h-[32px] cursor-pointer hover:bg-blue-100/30 leading-8"
+                        >
                             下移一层
                         </li>
-                        <li className="w-[80px] h-[32px] cursor-pointer hover:bg-blue-100/30 leading-8">
+                        <li
+                            onClick={topZIndex}
+                            className="w-[80px] h-[32px] cursor-pointer hover:bg-blue-100/30 leading-8"
+                        >
                             置顶
                         </li>
-                        <li className="w-[80px] h-[32px] cursor-pointer hover:bg-blue-100/30 leading-8">
+                        <li
+                            onClick={bottomZIndex}
+                            className="w-[80px] h-[32px] cursor-pointer hover:bg-blue-100/30 leading-8"
+                        >
                             置底
                         </li>
                     </>

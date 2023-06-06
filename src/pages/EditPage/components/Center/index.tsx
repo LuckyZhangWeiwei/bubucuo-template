@@ -1,5 +1,11 @@
 import Canvas from "./Canvas";
-import { selectAllCmps, selectOneCmp } from "src/store/editStore/editStore";
+import {
+    delSelectedCmps,
+    downZIndex,
+    selectAllCmps,
+    selectOneCmp,
+    upZIndex,
+} from "src/store/editStore/editStore";
 import Zoom from "./Zoom";
 import useZoomStore from "src/store/zoomStore/zoomStore";
 import {
@@ -15,8 +21,22 @@ export default function Center() {
     //全选
     const keyDown = (e) => {
         if ((e.target as HTMLElement).nodeName === "TEXTAREA") return;
+
+        switch (e.code) {
+            case "Backspace":
+                delSelectedCmps();
+                return;
+        }
         if (e.metaKey) {
             switch (e.code) {
+                case "ArrowUp":
+                    e.preventDefault();
+                    upZIndex();
+                    return;
+                case "ArrowDown":
+                    e.preventDefault();
+                    downZIndex();
+                    return;
                 case "KeyA":
                     selectAllCmps();
                     return;

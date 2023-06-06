@@ -18,6 +18,78 @@ const useEditStore = create(
         canvasChangeHistoryIndex: 0,
     }))
 );
+// * 单个组件修改层级
+// 置顶组件
+export const topZIndex = () => {
+    useEditStore.setState((draft) => {
+        const cmps = draft.canvas.cmps;
+        const selectCmpIndex = selectedCmpIndexSelector(draft);
+        // 判断是不是最后一个组件
+        const indexIsLast = selectCmpIndex === cmps.length - 1;
+        if (indexIsLast) return;
+        draft.canvas.cmps = cmps
+            .slice(0, selectCmpIndex)
+            .concat(cmps.slice(selectCmpIndex + 1))
+            .concat(cmps[selectCmpIndex]);
+
+        draft.assembly = new Set([cmps.length - 1]);
+        recordCanvasChangeHistory(draft);
+    });
+};
+// 置底组件
+export const bottomZIndex = () => {
+    useEditStore.setState((draft) => {
+        const cmps = draft.canvas.cmps;
+        const selectCmpIndex = selectedCmpIndexSelector(draft);
+        // 判断是不是第一个组件
+        const indexIsFirst = selectCmpIndex === 0;
+        if (indexIsFirst) return;
+        draft.canvas.cmps = [cmps[selectCmpIndex]]
+            .concat(cmps.slice(0, selectCmpIndex))
+            .concat(cmps.slice(selectCmpIndex + 1));
+
+        draft.assembly = new Set([0]);
+        recordCanvasChangeHistory(draft);
+    });
+};
+// 上移一层
+export const upZIndex = () => {
+    useEditStore.setState((draft) => {
+        const cmps = draft.canvas.cmps;
+        const selectCmpIndex = selectedCmpIndexSelector(draft);
+        const indexIsLast = selectCmpIndex === cmps.length - 1;
+        if (indexIsLast) return;
+        [
+            draft.canvas.cmps[selectCmpIndex],
+            draft.canvas.cmps[selectCmpIndex + 1],
+        ] = [
+            draft.canvas.cmps[selectCmpIndex + 1],
+            draft.canvas.cmps[selectCmpIndex],
+        ];
+
+        draft.assembly = new Set([selectCmpIndex + 1]);
+        recordCanvasChangeHistory(draft);
+    });
+};
+// 下移一层
+export const downZIndex = () => {
+    useEditStore.setState((draft) => {
+        const selectCmpIndex = selectedCmpIndexSelector(draft);
+
+        const indexIsFirst = selectCmpIndex === 0;
+        if (indexIsFirst) return;
+        [
+            draft.canvas.cmps[selectCmpIndex],
+            draft.canvas.cmps[selectCmpIndex - 1],
+        ] = [
+            draft.canvas.cmps[selectCmpIndex - 1],
+            draft.canvas.cmps[selectCmpIndex],
+        ];
+
+        draft.assembly = new Set([selectCmpIndex - 1]);
+        recordCanvasChangeHistory(draft);
+    });
+};
 // 复制组件
 export const addAssemblyCmps = () => {
     useEditStore.setState((draft) => {
@@ -209,6 +281,11 @@ export const delSelectedCmps = () => {
         draft.assembly.clear();
         recordCanvasChangeHistory(draft);
     });
+};
+// 返回所选单个组件的下标
+export const selectedCmpIndexSelector = (store: IEditStoreState) => {
+    const selectedCmpIndex = Array.from(store.assembly)[0];
+    return selectedCmpIndex === undefined ? -1 : selectedCmpIndex;
 };
 export default useEditStore;
 
